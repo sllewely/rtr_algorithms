@@ -38,9 +38,9 @@ class LinkedList:
 	def find(self,node):
 		previous = None
 		current = self.head
+		# check if current node is the one we want before moving to next
+		# (otherwise this will not find the head node)
 		while current is not None:
-			# check if current node is the one we want before moving to next
-			# (otherwise this will not find the head node)
 			if current == node:
 				return current, previous
 			else:

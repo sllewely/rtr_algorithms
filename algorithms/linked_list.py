@@ -1,57 +1,69 @@
-class Node():
-	def __init__(self, value, next):
-		self.value=value
-		self.next=next
+class Node:
+	def __init__(self, value, next = None):
+		self.value = value
+		self.next = next
 
-class LinkedList():
-	def __init__(self, head, tail):
-		self.head=head
-		self.tail=tail
+	def __repr__(self):
+		return "Node(value={}, next={})".format(self.value, self.next)
 
-	def add(self, node):
-		self.tail.next=node
-		self.tail=node
+class LinkedList:
+	def __init__(self, head):
+		self.head = head
+		self.tail = self.set_tail()
+
+	def __repr__(self):
+		return "LinkedList(head={}, tail={})".format(self.head, self.tail)
+
+	def set_tail(self):
+		# finds the last node in the head
+		current_node = self.head
+		while current_node and current_node.next:
+			current_node = current_node.next
+		return current_node
+
+	def add(self, new_node):
+		if self.tail:
+			old_tail = self.tail
+			old_tail.next = new_node
+			self.tail = new_node
+		else:
+			self.head.next = new_node
+			self.tail = new_node
+
+		# because new_node could have many other nodes linked to it
+		# we need to find the very last node and make that the tail
+		while self.tail.next:
+			self.tail = self.tail.next
 
 	def find(self,node):
 		previous = None
 		current = self.head
 		while current is not None:
-			previous=current
-			current=current.next
-			
-			# print previous.value, current.value
+			# check if current node is the one we want before moving to next
+			# (otherwise this will not find the head node)
 			if current == node:
 				return current, previous
+			else:
+				previous = current
+				current = current.next
 
 	def remove(self,node):
-		key,previous = self.find(node)
-		# print self.find(node)
-		previous.next=key.next
-
+		key, previous = self.find(node)
+		previous.next = key.next
 
 def main():
-	new_node = Node (5,None)
-	another_node=Node(6,new_node)
-	third_node=Node(7,None)
+	new_node = Node (6)
+	another_node = Node(5, new_node)
+	fourth_node = Node(8)
+	third_node = Node(7, fourth_node)
 
-
-	# print new_node.next
-	new_linked_list = LinkedList (another_node, new_node)
-
+	new_linked_list = LinkedList(another_node)
 	new_linked_list.add(third_node)
-	ok = new_linked_list.find (new_node)
-	rm= new_linked_list.remove(new_node)
+	print new_linked_list # should be 5 -> 6 -> 7 -> 8 with tail of 8
 
-	# print ok
-	# for node in rm:
-	# 	print node.value
-# 
-	# print new_linked_list.
-	print new_linked_list.head.value
-	print new_linked_list.head.next.value
-	print new_linked_list.tail.value
-
-
+	ok = new_linked_list.find(third_node)
+	rm= new_linked_list.remove(third_node)
+	print new_linked_list # should be 5 -> 6 -> 8 with tail of 8
 
 if __name__ == '__main__':
   main()

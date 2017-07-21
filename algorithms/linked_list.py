@@ -7,63 +7,49 @@ class Node:
 		return "Node(value={}, next={})".format(self.value, self.next)
 
 class LinkedList:
-	def __init__(self, head):
-		self.head = head
-		self.tail = self.set_tail()
+	def __init__(self, value):
+		self.head = Node(value)
+		self.tail = None
 
 	def __repr__(self):
 		return "LinkedList(head={}, tail={})".format(self.head, self.tail)
 
-	def set_tail(self):
-		# finds the last node in the head
-		current_node = self.head
-		while current_node and current_node.next:
-			current_node = current_node.next
-		return current_node
-
-	def add(self, new_node):
+	def add(self, value):
+		new_node = Node(value)
 		if self.tail:
 			old_tail = self.tail
 			old_tail.next = new_node
-			self.tail = new_node
 		else:
 			self.head.next = new_node
-			self.tail = new_node
 
-		# because new_node could have many other nodes linked to it
-		# we need to find the very last node and make that the tail
-		while self.tail.next:
-			self.tail = self.tail.next
+		self.tail = new_node
 
-	def find(self,node):
+	def find(self, value):
 		previous = None
 		current = self.head
 		# check if current node is the one we want before moving to next
 		# (otherwise this will not find the head node)
 		while current is not None:
-			if current == node:
+			if current.value == value:
 				return current, previous
 			else:
 				previous = current
 				current = current.next
 
-	def remove(self,node):
-		key, previous = self.find(node)
+	def remove(self, value):
+		key, previous = self.find(value)
 		previous.next = key.next
 
 def main():
-	new_node = Node (6)
-	another_node = Node(5, new_node)
-	fourth_node = Node(8)
-	third_node = Node(7, fourth_node)
+	my_list = LinkedList(1)
+	print my_list
 
-	new_linked_list = LinkedList(another_node)
-	new_linked_list.add(third_node)
-	print new_linked_list # should be 5 -> 6 -> 7 -> 8 with tail of 8
+	for i in xrange(2,5):
+		my_list.add(i)
+		print my_list
 
-	ok = new_linked_list.find(third_node)
-	rm= new_linked_list.remove(third_node)
-	print new_linked_list # should be 5 -> 6 -> 8 with tail of 8
+	my_list.remove(3)
+	print my_list
 
 if __name__ == '__main__':
   main()

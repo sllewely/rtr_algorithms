@@ -5,3 +5,4 @@ About once a week, we meet to go over algorithm problems and data structures.  T
 
 This repo contains past examples and problems.
 
+Thanks to @annademidova for organizing.

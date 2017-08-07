@@ -1,57 +1,55 @@
-class Node():
-	def __init__(self, value, next):
-		self.value=value
-		self.next=next
+class Node:
+	def __init__(self, value, next = None):
+		self.value = value
+		self.next = next
 
-class LinkedList():
-	def __init__(self, head, tail):
-		self.head=head
-		self.tail=tail
+	def __repr__(self):
+		return "Node(value={}, next={})".format(self.value, self.next)
 
-	def add(self, node):
-		self.tail.next=node
-		self.tail=node
+class LinkedList:
+	def __init__(self, value):
+		self.head = Node(value)
+		self.tail = None
 
-	def find(self,node):
+	def __repr__(self):
+		return "LinkedList(head={}, tail={})".format(self.head, self.tail)
+
+	def add(self, value):
+		new_node = Node(value)
+		if self.tail:
+			old_tail = self.tail
+			old_tail.next = new_node
+		else:
+			self.head.next = new_node
+
+		self.tail = new_node
+
+	def find(self, value):
 		previous = None
 		current = self.head
+		# check if current node is the one we want before moving to next
+		# (otherwise this will not find the head node)
 		while current is not None:
-			previous=current
-			current=current.next
-			
-			# print previous.value, current.value
-			if current == node:
+			if current.value == value:
 				return current, previous
+			else:
+				previous = current
+				current = current.next
 
-	def remove(self,node):
-		key,previous = self.find(node)
-		# print self.find(node)
-		previous.next=key.next
-
+	def remove(self, value):
+		key, previous = self.find(value)
+		previous.next = key.next
 
 def main():
-	new_node = Node (5,None)
-	another_node=Node(6,new_node)
-	third_node=Node(7,None)
+	my_list = LinkedList(1)
+	print my_list
 
+	for i in xrange(2,5):
+		my_list.add(i)
+		print my_list
 
-	# print new_node.next
-	new_linked_list = LinkedList (another_node, new_node)
-
-	new_linked_list.add(third_node)
-	ok = new_linked_list.find (new_node)
-	rm= new_linked_list.remove(new_node)
-
-	# print ok
-	# for node in rm:
-	# 	print node.value
-# 
-	# print new_linked_list.
-	print new_linked_list.head.value
-	print new_linked_list.head.next.value
-	print new_linked_list.tail.value
-
-
+	my_list.remove(3)
+	print my_list
 
 if __name__ == '__main__':
   main()
